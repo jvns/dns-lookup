@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+      <title>DNS lookups!</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.3/tailwind.min.css">
+      <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic,500italic,300,300italic,100' rel='stylesheet' type='text/css'>
+      <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+      <script src="/dns.js"> </script>
+  </head>
+  <body>
+<style>
+input[type=button]:focus {
+    box-shadow: 0px 0px 2px purple;
+
+}
+input[type=button] {
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+}
+</style>
+<div class="my-8 m-auto w-2/3 bg-gray-100 p-8 pt-12 shadow-md">
+    <div>
+        <div class="relative">
+            <input name="domain" 
+                   type="text" 
+                   id="domain" 
+                   placeholder="yourdomain.com"
+                   class="focus:outline-none bg-transparent w-full  focus:border-purple-500 border-solid border-b-2 transition duration-500">
+            <label for="domain" class="text-sm text-purple-800 absolute left-0 -top-6">
+                Name
+            </label>
+        </div>
+    </div>
+    <div class="mt-8">
+        <input value="A" type="button"      onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
+        <input value="AAAA" type="button"   onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
+        <input value="ANY"  type="button"   onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
+        <input value="CAA"  type="button"   onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
+        <input value="CNAME"  type="button" onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
+        <input value="MX"  type="button"    onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
+        <input value="NS"  type="button"    onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
+        <input value="PTR"  type="button"   onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
+        <input value="SOA"  type="button"   onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
+        <input value="SRV"  type="button"   onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
+        <input value="TXT"  type="button"   onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
+        <br>
+        <div class="text-center mt-4">
+        <input id="all-the-records" value="GET ME ALL THE RECORDS!"  type="button"   onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
+        </div>
+    </div>
+
+</div>
+
+<div id="app">
+<div v-for="result in results" class="relative my-8 m-auto w-2/3 bg-gray-100 p-8 pt-12 shadow-md">
+    <div>
+        <span class="absolute rounded left-2 -top-4 shadow-sm p-2 inline-block bg-purple-500 text-white">{{result.type.toUpperCase()}} records</span>
+    <pre v-if="result.answer" id="answers" class="overflow-x-scroll">{{result.answer}}</pre>
+    <pre v-else id="answers" class="overflow-x-scroll">&lt;no result&gt;</pre>
+    </div>
+</div>
+</div>
+
+<div class="text-sm w-2/3 m-auto mt-64">
+    This design is extremely heavily inspired by <a href="https://toolbox.googleapps.com/apps/dig/#SRV/" class="text-purple-800">Google's DNS lookup webmaster tool</a>. <br>The main differences are a "GET ME ALL THE RECORDS" feature and simpler output.
+</div>
+
+  </body>
+</html>
