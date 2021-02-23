@@ -14,6 +14,13 @@ type Request struct {
 	Type       string `json:"type"`
 }
 
+type Response struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
+	Type  string `json:"type"`
+	TTL   uint32 `json:"ttl"`
+}
+
 func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse, error) {
 	if request.HTTPMethod != "POST" {
 		return &events.APIGatewayProxyResponse{
@@ -33,7 +40,7 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 		}, nil
 	}
 
-	var results *[]string
+	var results *[]Response
 	var err error
 	if results, err = query(req.Type, req.DomainName); err != nil {
 		return &events.APIGatewayProxyResponse{
@@ -100,16 +107,23 @@ func message(typ string, name string) *dns.Msg {
 	return m
 }
 
-func query(typ string, name string) (*[]string, error) {
+func query(typ string, name string) (*[]Response, error) {
 	message := message(typ, name)
 	c := new(dns.Client)
 	in, _, err := c.Exchange(message, "8.8.8.8:53")
 	if err != nil {
 		return nil, err
 	}
-	replies := make([]string, 0)
+	replies := make([]Response, 0)
 	for _, a := range in.Answer {
-		replies = append(replies, fmt.Sprintf("%v", a))
+		h := a.Header()
+		parts := strings.Split(a.String(), "\t")
+		replies = append(replies, Response{
+			Value: parts[len(parts)-1],
+			Name:  h.Name,
+			TTL:   h.Ttl,
+			Type:  dns.Type(h.Rrtype).String(),
+		})
 	}
 	return &replies, nil
 }
