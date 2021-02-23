@@ -135,6 +135,11 @@ ul + ul {
     That's normal! If a name has a CNAME record set, it'll answer with that CNAME when you make queries for other record types. You can see an example of this if you query for <a class="underline" href="/#www.twitter.com|A">www.twitter.com</a>
     </p>
 
+    <p class="font-bold">Does this support every DNS record type?</p>
+    <p class="pl-2 mb-4">
+    Nope! "GET ME ALL THE RECORDS" will only query for all the types of records listed at the top of the page. If you ask I might add more though!
+    </p>
+
     <p class="font-bold">What does this build on?</p>
     <p class="pl-2 mb-4">
     This design is extremely heavily inspired by <a href="https://toolbox.googleapps.com/apps/dig/#SRV/" class="text-purple-800">Google's DNS lookup webmaster tool</a>. The main differences are a "GET ME ALL THE RECORDS" feature and simpler formatting of the output.
