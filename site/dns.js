@@ -55,7 +55,8 @@ function lookupAll(domain) {
 }
 
 async function lookupInner(type, domain, append) {
-    const url = "/.netlify/functions/dns"
+    const host = location.hostname === "localhost" ? "https://dns-lookup-fun.netlify.app" : "";
+    const url = host + "/.netlify/functions/dns"
     const response = await fetch(url, {
         method: 'POST',
         headers: {
