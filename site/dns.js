@@ -80,7 +80,7 @@ async function lookupInner(type, domain, append) {
     const answers = await response.json();
     const result = {
         type: type.toUpperCase(),
-        answer: answers.join("\n"),
+        answers: answers,
     };
     if (append) {
         app.results.push(result);

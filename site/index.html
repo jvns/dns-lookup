@@ -69,8 +69,25 @@ input:checked + label:hover {
 <div v-for="result in sortedResults" class="relative my-8 m-auto w-2/3 bg-gray-100 p-8 pt-12 shadow-md">
     <div>
         <span class="absolute rounded left-2 -top-4 shadow-sm p-2 inline-block bg-purple-500 text-white">{{result.type.toUpperCase()}} records</span>
-    <pre v-if="result.answer" id="answers" class="overflow-x-scroll">{{result.answer}}</pre>
-    <pre v-else id="answers" class="overflow-x-scroll">&lt;no result&gt;</pre>
+        <table v-if="Object.keys(result.answers).length > 0" id="answers" class="w-full">
+            <tr class="border-b border-gray-300">
+                <td class="px-4" >name</td>
+                <td class="px-4" >TTL</td>
+                <td class="px-4 whitespace-nowrap" >record type</td>
+                <td class="px-4" >value</td>
+            </tr>
+            <tr v-for="answer in result.answers" class="py-4">
+                <td class="align-top py-1 px-4"><code>{{answer.name}}</code></td>
+                <td class="align-top py-1 px-4"><code>{{answer.ttl}}</code></td>
+                <td class="align-top py-1 px-4 w-24"><code>{{answer.type}}</code></td>
+                <td class="align-top py-1 px-4 w-full break-words">
+                    <div class="overflow-x-scroll w-full">
+                    <code>{{answer.value}}</code>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <pre v-else id="answers">&lt;no result&gt;</pre>
     </div>
 </div>
 </div>
