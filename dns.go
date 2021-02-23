@@ -110,6 +110,7 @@ func message(typ string, name string) *dns.Msg {
 func query(typ string, name string) (*[]Response, error) {
 	message := message(typ, name)
 	c := new(dns.Client)
+	c.Net = "tcp"
 	in, _, err := c.Exchange(message, "8.8.8.8:53")
 	if err != nil {
 		return nil, err
