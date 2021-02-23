@@ -21,7 +21,7 @@ function loadFromHash() {
     if (!window.location.hash) {
         return;
     }
-    const hash = window.location.hash.substring(1);
+    const hash = decodeURIComponent(window.location.hash.substring(1));
     const parts = hash.split('|');
     const domain = parts[0];
     const type = parts[1];
