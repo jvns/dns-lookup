@@ -16,6 +16,7 @@ app = new Vue({
 loadFromHash();
 })
 
+window.onhashchange = loadFromHash;
 function loadFromHash() {
     if (!window.location.hash) {
         return;
