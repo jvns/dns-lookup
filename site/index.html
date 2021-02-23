@@ -17,6 +17,18 @@ input[type=button]:focus {
 input[type=button] {
     font-family: "Roboto","Helvetica","Arial",sans-serif;
 }
+input:checked + label {
+    color: white;
+	user-select: none;
+    background-color: rgba(139,92,246);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+}
+input:checked + label:hover {
+    background-color: rgba(139,92,246);
+    color: white;
+}
+
 </style>
 <div class="my-8 m-auto w-2/3 bg-gray-100 p-8 pt-12 shadow-md">
     <div>
@@ -32,20 +44,20 @@ input[type=button] {
         </div>
     </div>
     <div class="mt-8">
-        <input value="A" type="button"      onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
-        <input value="AAAA" type="button"   onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
-        <input value="ANY"  type="button"   onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
-        <input value="CAA"  type="button"   onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
-        <input value="CNAME"  type="button" onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
-        <input value="MX"  type="button"    onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
-        <input value="NS"  type="button"    onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
-        <input value="PTR"  type="button"   onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
-        <input value="SOA"  type="button"   onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
-        <input value="SRV"  type="button"   onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
-        <input value="TXT"  type="button"   onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
+        <input id="A"     value="A"     name="type" type="radio"  onclick="lookup(this)" class="hidden"> <label for="A"     class="bg-transparent font-medium text-sm hover:bg-gray-200 p-2 px-4 mx-1">A</label>
+        <input id="AAAA"  value="AAAA"  name="type" type="radio"  onclick="lookup(this)" class="hidden"> <label for="AAAA"  class="bg-transparent font-medium text-sm hover:bg-gray-200 p-2 px-4 mx-1">AAAA</label>
+        <input id="ANY"   value="ANY"   name="type" type="radio"  onclick="lookup(this)" class="hidden"> <label for="ANY"   class="bg-transparent font-medium text-sm hover:bg-gray-200 p-2 px-4 mx-1">ANY</label>
+        <input id="CAA"   value="CAA"   name="type" type="radio"  onclick="lookup(this)" class="hidden"> <label for="CAA"   class="bg-transparent font-medium text-sm hover:bg-gray-200 p-2 px-4 mx-1">CAA</label>
+        <input id="CNAME" value="CNAME" name="type" type="radio"  onclick="lookup(this)" class="hidden"> <label for="CNAME" class="bg-transparent font-medium text-sm hover:bg-gray-200 p-2 px-4 mx-1">CNAME</label>
+        <input id="MX"    value="MX"    name="type" type="radio"  onclick="lookup(this)" class="hidden"> <label for="MX"    class="bg-transparent font-medium text-sm hover:bg-gray-200 p-2 px-4 mx-1">MX</label>
+        <input id="NS"    value="NS"    name="type" type="radio"  onclick="lookup(this)" class="hidden"> <label for="NS"    class="bg-transparent font-medium text-sm hover:bg-gray-200 p-2 px-4 mx-1">NS</label>
+        <input id="PTR"   value="PTR"   name="type" type="radio"  onclick="lookup(this)" class="hidden"> <label for="PTR"   class="bg-transparent font-medium text-sm hover:bg-gray-200 p-2 px-4 mx-1">PTR</label>
+        <input id="SOA"   value="SOA"   name="type" type="radio"  onclick="lookup(this)" class="hidden"> <label for="SOA"   class="bg-transparent font-medium text-sm hover:bg-gray-200 p-2 px-4 mx-1">SOA</label>
+        <input id="SRV"   value="SRV"   name="type" type="radio"  onclick="lookup(this)" class="hidden"> <label for="SRV"   class="bg-transparent font-medium text-sm hover:bg-gray-200 p-2 px-4 mx-1">SRV</label>
+        <input id="TXT"   value="TXT"   name="type" type="radio"  onclick="lookup(this)" class="hidden"> <label for="TXT"   class="bg-transparent font-medium text-sm hover:bg-gray-200 p-2 px-4 mx-1">TXT</label>
         <br>
         <div class="text-center mt-4">
-        <input id="all-the-records" value="GET ME ALL THE RECORDS!"  type="button"   onclick="lookup(this)" class="bg-transparent font-medium text-sm focus:bg-purple-500 focus:text-white hover:bg-gray-200 p-2 px-4 mx-1">
+        <input id="ALL-THE-RECORDS" name="type" value="GET ME ALL THE RECORDS!"  type="radio"   onclick="lookup(this)" class="hidden"> <label for="ALL-THE-RECORDS"   class="bg-transparent font-medium text-sm hover:bg-gray-200 p-2 px-4 mx-1">GET ME ALL THE RECORDS!</label>
         </div>
     </div>
 

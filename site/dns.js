@@ -31,15 +31,16 @@ function loadFromHash() {
     } else {
         lookupInner(type, domain, false);
     }
+    document.getElementById(type.toUpperCase()).checked=true;
 }
 
 function lookup(element) {
     const domain = document.getElementById('domain').value;
-    if (element.id == 'all-the-records') {
+    const type = element.id.toLowerCase();
+    if (type == 'all-the-records') {
         lookupAll(domain);
         window.location.hash = domain + '|' + 'all-the-records';
     } else {
-        const type = element.value.toLowerCase();
         lookupInner(type, domain, false);
         window.location.hash = domain + '|' + type.toUpperCase();
     }
