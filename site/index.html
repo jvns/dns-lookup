@@ -30,7 +30,8 @@ input:checked + label:hover {
 }
 
 </style>
-<div class="my-8 m-auto w-2/3 bg-gray-100 p-8 pt-12 shadow-md">
+<div class="container max-w-screen-lg m-auto p-2">
+<div class="my-8 m-auto w-full bg-gray-100 p-8 pt-12 shadow-md">
     <form onsubmit="formSubmit(event)">
     <div>
         <div class="relative">
@@ -66,7 +67,7 @@ input:checked + label:hover {
 </div>
 
 <div id="app">
-<div v-for="result in sortedResults" class="relative my-8 m-auto w-2/3 bg-gray-100 p-8 pt-12 shadow-md">
+<div v-for="result in sortedResults" class="relative my-8 m-auto w-full bg-gray-100 p-8 pt-12 shadow-md">
     <div>
         <span class="absolute rounded left-2 -top-4 shadow-sm p-2 inline-block bg-purple-500 text-white">{{result.type.toUpperCase()}} answers</span>
         <table v-if="Object.keys(result.answers).length > 0" id="answers" class="w-full">
@@ -92,8 +93,9 @@ input:checked + label:hover {
 </div>
 </div>
 
-<div class="text-sm w-2/3 m-auto mt-64">
+<div class="text-sm w-full m-auto mt-64">
     This design is extremely heavily inspired by <a href="https://toolbox.googleapps.com/apps/dig/#SRV/" class="text-purple-800">Google's DNS lookup webmaster tool</a>. <br>The main differences are a "GET ME ALL THE RECORDS" feature and simpler output.
+</div>
 </div>
 
   </body>
