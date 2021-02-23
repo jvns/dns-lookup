@@ -4,6 +4,7 @@ app = new Vue({
   el: '#app',
   data: {
       results: [],
+      requestID: undefined,
   },
   computed: {
       sortedResults: function() {
@@ -15,6 +16,18 @@ app = new Vue({
 })
 loadFromHash();
 })
+
+function makeid(length) {
+   // copied from stackoverflow :)
+   // https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
 
 window.onhashchange = loadFromHash;
 function loadFromHash() {
@@ -45,27 +58,29 @@ function formSubmit(event) {
 }
 
 function lookup(element) {
+    var requestID = makeid(10);
+    app.requestID = requestID;
     const domain = document.getElementById('domain').value.trim();
     const type = element.id.toLowerCase();
     if (type == 'all-the-records') {
-        lookupAll(domain);
+        lookupAll(domain, requestID);
         window.location.hash = domain + '|' + 'all-the-records';
     } else {
-        lookupInner(type, domain, false);
+        lookupInner(type, domain, false, requestID);
         window.location.hash = domain + '|' + type.toUpperCase();
     }
 }
 
-function lookupAll(domain) {
+function lookupAll(domain, requestID) {
     app.results = [];
     const all = ['a', 'aaaa', 'caa', 'cname', 'mx', 'ns', 'ptr', 'soa', 'srv', 'txt'];
     for (var i = 0; i < all.length; i++) {
         const type = all[i];
-        lookupInner(type, domain, true);
+        lookupInner(type, domain, true, requestID);
     }
 }
 
-async function lookupInner(type, domain, append) {
+async function lookupInner(type, domain, append, requestID) {
     const host = location.hostname === "localhost" ? "https://dns-lookup-fun.netlify.app" : "";
     const url = host + "/.netlify/functions/dns"
     const response = await fetch(url, {
@@ -79,6 +94,11 @@ async function lookupInner(type, domain, append) {
         }),
     });
     const answers = await response.json();
+    if (app.requestID != requestID) {
+        // there was another request made already and this answer's not wanted
+        // anymore, don't display it
+        return;
+    }
     const result = {
         type: type.toUpperCase(),
         answers: answers,
