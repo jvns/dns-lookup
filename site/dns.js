@@ -4,6 +4,14 @@ app = new Vue({
   el: '#app',
   data: {
       results: [],
+  },
+  computed: {
+      sortedResults: function() {
+          return this.results.sort(function(a,b){
+              return a.type.toUpperCase() < b.type.toUpperCase()? -1:1;
+              return x;
+          });
+      }
   }
 })
 loadFromHash();
