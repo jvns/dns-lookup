@@ -38,7 +38,7 @@ function formSubmit(event) {
     event.preventDefault();
     let element = document.querySelector('input[name="type"]:checked');
     if (!element) {
-        element = document.getElementById('A');
+        element = document.getElementById('ALL-THE-RECORDS');
         element.checked = true;
     }
     lookup(element);
