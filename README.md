@@ -1,7 +1,5 @@
-# Deploying AWS Lambda Go functions with Netlify
+# a simple DNS lookup tool
 
-This is an example of how to deploy Go functions with Netlify on AWS Lambda.
-
-You can find the code in [main.go](main.go).
-
-Read more about Go functions support on Netlify in [our documentation](https://www.netlify.com/docs/lambda-functions).
+This is a website that makes DNS queries. It doesn't have an exciting name so
+far. It's similar to [google's dns webmaster tool](https://toolbox.googleapps.com/apps/dig/),
+but with simpler output and a button that lets you make all the DNS queries all at once.
