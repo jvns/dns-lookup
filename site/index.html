@@ -68,7 +68,7 @@ input:checked + label:hover {
 <div id="app">
 <div v-for="result in sortedResults" class="relative my-8 m-auto w-2/3 bg-gray-100 p-8 pt-12 shadow-md">
     <div>
-        <span class="absolute rounded left-2 -top-4 shadow-sm p-2 inline-block bg-purple-500 text-white">{{result.type.toUpperCase()}} records</span>
+        <span class="absolute rounded left-2 -top-4 shadow-sm p-2 inline-block bg-purple-500 text-white">{{result.type.toUpperCase()}} answers</span>
         <table v-if="Object.keys(result.answers).length > 0" id="answers" class="w-full">
             <tr class="border-b border-gray-300">
                 <td class="px-4" >name</td>
