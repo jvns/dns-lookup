@@ -116,7 +116,30 @@ ul + ul {
 </div>
 
 <div class="text-sm w-full m-auto mt-64">
-    This design is extremely heavily inspired by <a href="https://toolbox.googleapps.com/apps/dig/#SRV/" class="text-purple-800">Google's DNS lookup webmaster tool</a>. <br>The main differences are a "GET ME ALL THE RECORDS" feature and simpler output.
+    <p class="pb-2">
+    FAQ:
+    </p>
+
+    <p class="font-bold">What DNS server is this using?</p>
+    <p class="pl-2 mb-4">
+    8.8.8.8
+    </p>
+
+    <p class="font-bold">Where are the DNS queries being made?</p>
+    <p class="pl-2 mb-4">
+    In <a class="underline" href="https://github.com/jvns/dns-lookup/blob/d204fa593d503e6ab47dbbab3cc738db2260b880/dns.go">this little Go program</a>
+    </p>
+
+    <p class="font-bold">When I make an A query, why does I sometimes a CNAME record as a reply?</p>
+    <p class="pl-2 mb-4">
+    That's normal! If a name has a CNAME record set, it'll answer with that CNAME when you make queries for other record types. You can see an example of this if you query for <a class="underline" href="/#www.twitter.com|A">www.twitter.com</a>
+    </p>
+
+    <p class="font-bold">What does this build on?</p>
+    <p class="pl-2 mb-4">
+    This design is extremely heavily inspired by <a href="https://toolbox.googleapps.com/apps/dig/#SRV/" class="text-purple-800">Google's DNS lookup webmaster tool</a>. The main differences are a "GET ME ALL THE RECORDS" feature and simpler formatting of the output.
+    </p>
+
 </div>
 </div>
 
