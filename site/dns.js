@@ -9,7 +9,6 @@ app = new Vue({
       sortedResults: function() {
           return this.results.sort(function(a,b){
               return a.type.toUpperCase() < b.type.toUpperCase()? -1:1;
-              return x;
           });
       }
   }
