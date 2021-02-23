@@ -77,15 +77,11 @@ input:checked + label:hover {
                 <td class="px-4 whitespace-nowrap" >record type</td>
                 <td class="px-4" >value</td>
             </tr>
-            <tr v-for="answer in result.answers" class="py-4">
-                <td class="align-top py-1 px-4"><code>{{answer.name}}</code></td>
-                <td class="align-top py-1 px-4"><code>{{answer.ttl}}</code></td>
-                <td class="align-top py-1 px-4 w-24"><code>{{answer.type}}</code></td>
-                <td class="align-top py-1 px-4 w-full break-words">
-                    <div class="overflow-x-scroll w-full">
-                    <code>{{answer.value}}</code>
-                    </div>
-                </td>
+            <tr v-for="answer in result.answers" class="py-4 font-mono">
+                <td class="align-top py-1 px-4">{{answer.name}}</td>
+                <td class="align-top py-1 px-4">{{answer.ttl}}</td>
+                <td class="align-top py-1 px-4 w-24">{{answer.type}}</td>
+                <td class="align-top py-1 px-4 w-full" style="word-break: break-word;">{{answer.value}} </td>
             </tr>
         </table>
         <pre v-else id="answers">&lt;no result&gt;</pre>
