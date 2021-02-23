@@ -44,7 +44,7 @@ function formSubmit(event) {
 }
 
 function lookup(element) {
-    const domain = document.getElementById('domain').value;
+    const domain = document.getElementById('domain').value.trim();
     const type = element.id.toLowerCase();
     if (type == 'all-the-records') {
         lookupAll(domain);
