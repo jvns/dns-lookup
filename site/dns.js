@@ -33,6 +33,16 @@ function loadFromHash() {
     document.getElementById(type.toUpperCase()).checked=true;
 }
 
+function formSubmit(event) {
+    event.preventDefault();
+    let element = document.querySelector('input[name="type"]:checked');
+    if (!element) {
+        element = document.getElementById('A');
+        element.checked = true;
+    }
+    lookup(element);
+}
+
 function lookup(element) {
     const domain = document.getElementById('domain').value;
     const type = element.id.toLowerCase();

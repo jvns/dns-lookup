@@ -31,6 +31,7 @@ input:checked + label:hover {
 
 </style>
 <div class="my-8 m-auto w-2/3 bg-gray-100 p-8 pt-12 shadow-md">
+    <form onsubmit="formSubmit(event)">
     <div>
         <div class="relative">
             <input name="domain" 
@@ -60,6 +61,7 @@ input:checked + label:hover {
         <input id="ALL-THE-RECORDS" name="type" value="GET ME ALL THE RECORDS!"  type="radio"   onclick="lookup(this)" class="hidden"> <label for="ALL-THE-RECORDS"   class="bg-transparent font-medium text-sm hover:bg-gray-200 p-2 px-4 mx-1">GET ME ALL THE RECORDS!</label>
         </div>
     </div>
+    </form>
 
 </div>
 
