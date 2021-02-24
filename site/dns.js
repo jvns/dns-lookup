@@ -73,7 +73,7 @@ function lookup(element) {
 
 function lookupAll(domain, requestID) {
     app.results = [];
-    const all = ['a', 'aaaa', 'caa', 'cname', 'mx', 'ns', 'ptr', 'soa', 'srv', 'txt'];
+    const all = ['a', 'aaaa', 'caa', 'cname', 'mx', 'naptr', 'ns', 'ptr', 'soa', 'srv', 'txt'];
     for (var i = 0; i < all.length; i++) {
         const type = all[i];
         lookupInner(type, domain, true, requestID);
