@@ -83,13 +83,16 @@ function lookupAll(domain, requestID) {
 async function lookupInner(type, domain, append, requestID) {
     const host = location.hostname === "localhost" ? "https://dns-lookup-fun.netlify.app" : "";
     const url = host + "/.netlify/functions/dns"
+    if (!domain.endsWith('.')) {
+        domain += '.';
+    }
     const response = await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            name: domain + '.',
+            name: domain,
             type: type.toLowerCase(),
         }),
     });
