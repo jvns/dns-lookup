@@ -30,14 +30,20 @@ type Responses struct {
 
 func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse, error) {
 	if request.HTTPMethod != "POST" {
-		return &events.APIGatewayProxyResponse{
-			StatusCode: 200,
-			Headers: map[string]string{
-				"Content-Type":                 "application/json",
-				"Access-Control-Allow-Origin":  "*",
-				"Access-Control-Allow-Headers": "*",
-			},
-		}, nil
+		origin := request.Headers["origin"]
+		if strings.Contains(origin, "localhost") {
+			return &events.APIGatewayProxyResponse{
+				StatusCode: 200,
+				Headers: map[string]string{
+					"Access-Control-Allow-Origin":  origin,
+					"Access-Control-Allow-Headers": "*",
+				},
+			}, nil
+		} else {
+			return &events.APIGatewayProxyResponse{
+				StatusCode: 404,
+			}, nil
+		}
 	}
 	var req Request
 	if req.Server == "" {
