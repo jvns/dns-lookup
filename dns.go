@@ -139,6 +139,7 @@ func parseRRs(rrs []dns.RR) []Response {
 }
 
 func query(typ string, name string, dnsServer string) (*Responses, error) {
+	typ = strings.ToLower(typ)
 	message := message(typ, name)
 	c := new(dns.Client)
 	c.Net = "tcp"
