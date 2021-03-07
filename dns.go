@@ -155,14 +155,8 @@ func query(typ string, name string, dnsServer string) (*Responses, error) {
 }
 
 func main() {
+	// responses, _ := query("a", "jvns.ca.", "8.8.8.8"+":53")
+	// fmt.Println(responses)
 	// Make the handler available for Remote Procedure Call by AWS Lambda
-	responses, _ := query("a", "examplecat.com.", "a.root-servers.net:53")
-	for _, a := range responses.Authority {
-		fmt.Println(a)
-	}
-	responses, _ = query("a", "examplecat.com.", "8.8.8.8:53")
-	for _, a := range responses.Answer {
-		fmt.Println(a)
-	}
 	lambda.Start(handler)
 }
