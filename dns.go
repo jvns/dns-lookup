@@ -12,6 +12,7 @@ import (
 type Request struct {
 	DomainName string `json:"name"`
 	Type       string `json:"type"`
+	Server     string `json:"server"`
 }
 
 type Response struct {
@@ -19,6 +20,12 @@ type Response struct {
 	Value string `json:"value"`
 	Type  string `json:"type"`
 	TTL   uint32 `json:"ttl"`
+}
+
+type Responses struct {
+	Answer     []Response `json:"answer"`
+	Authority  []Response `json:"authority"`
+	Additional []Response `json:"additional"`
 }
 
 func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse, error) {
@@ -33,6 +40,9 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 		}, nil
 	}
 	var req Request
+	if req.Server == "" {
+		req.Server = "8.8.8.8"
+	}
 	if err := json.NewDecoder(strings.NewReader(request.Body)).Decode(&req); err != nil {
 		return &events.APIGatewayProxyResponse{
 			StatusCode: 500,
@@ -40,9 +50,9 @@ func handler(request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResp
 		}, nil
 	}
 
-	var results *[]Response
+	var results *Responses
 	var err error
-	if results, err = query(req.Type, req.DomainName); err != nil {
+	if results, err = query(req.Type, req.DomainName, req.Server+":53"); err != nil {
 		return &events.APIGatewayProxyResponse{
 			StatusCode: 500,
 			Body:       fmt.Sprintf("Failed to make DNS request: %v", err),
@@ -107,16 +117,9 @@ func message(typ string, name string) *dns.Msg {
 	return m
 }
 
-func query(typ string, name string) (*[]Response, error) {
-	message := message(typ, name)
-	c := new(dns.Client)
-	c.Net = "tcp"
-	in, _, err := c.Exchange(message, "8.8.8.8:53")
-	if err != nil {
-		return nil, err
-	}
+func parseRRs(rrs []dns.RR) []Response {
 	replies := make([]Response, 0)
-	for _, a := range in.Answer {
+	for _, a := range rrs {
 		h := a.Header()
 		parts := strings.Split(a.String(), "\t")
 		replies = append(replies, Response{
@@ -126,13 +129,32 @@ func query(typ string, name string) (*[]Response, error) {
 			Type:  dns.Type(h.Rrtype).String(),
 		})
 	}
-	return &replies, nil
+	return replies
+}
+
+func query(typ string, name string, dnsServer string) (*Responses, error) {
+	message := message(typ, name)
+	c := new(dns.Client)
+	c.Net = "tcp"
+	in, _, err := c.Exchange(message, dnsServer)
+	if err != nil {
+		return nil, err
+	}
+	return &Responses{
+		Answer:     parseRRs(in.Answer),
+		Authority:  parseRRs(in.Ns),
+		Additional: parseRRs(in.Extra),
+	}, nil
 }
 
 func main() {
 	// Make the handler available for Remote Procedure Call by AWS Lambda
-	replies, _ := query("a", "examplecat.com.")
-	for _, a := range *replies {
+	responses, _ := query("a", "examplecat.com.", "a.root-servers.net:53")
+	for _, a := range responses.Authority {
+		fmt.Println(a)
+	}
+	responses, _ = query("a", "examplecat.com.", "8.8.8.8:53")
+	for _, a := range responses.Answer {
 		fmt.Println(a)
 	}
 	lambda.Start(handler)

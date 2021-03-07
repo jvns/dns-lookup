@@ -96,7 +96,8 @@ async function lookupInner(type, domain, append, requestID) {
             type: type.toLowerCase(),
         }),
     });
-    const answers = await response.json();
+    const responses = await response.json();
+    const answers = responses["answer"];
     if (app.requestID != requestID) {
         // there was another request made already and this answer's not wanted
         // anymore, don't display it
