@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>DNS lookups!</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.3/tailwind.min.css">
+      <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic,500italic,300,300italic,100' rel='stylesheet' type='text/css'>
+      <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+      <script src="/trace.js"> </script>
+  </head>
+  <body>
+<style>
+input[type=button]:focus {
+    box-shadow: 0px 0px 2px purple;
+
+}
+input[type=button] {
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+}
+input:checked + label {
+    color: white;
+	user-select: none;
+    background-color: rgba(139,92,246);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+}
+input:checked + label:hover {
+    background-color: rgba(139,92,246);
+    color: white;
+}
+
+</style>
+
+<nav class="bg-purple-800 text-white w-full p-4 text-lg flex flex-row">
+    <div class="w-1/2 sm:pl-8">
+        a simple DNS lookup tool
+    </div>
+    <div class="w-1/2 text-right">
+        <a href="https://github.com/jvns/dns-lookup">GitHub repository</a>
+    </div>
+</nav>
+<div class="container max-w-screen-lg m-auto p-2">
+<div class="my-8 m-auto w-full bg-gray-100 p-8 pt-12 shadow-md">
+    <form onsubmit="formSubmit(event)">
+    <div>
+        <div class="relative">
+            <input name="domain" 
+                   type="text" 
+                   id="domain" 
+                   placeholder="yourdomain.com"
+                   class="focus:outline-none bg-transparent w-full  focus:border-purple-500 border-solid border-b-2 transition duration-500">
+            <label for="domain" class="text-sm text-purple-800 absolute left-0 -top-6">
+                Name
+            </label>
+        </div>
+    </div>
+    <div class="mt-8">
+        <div class="text-center mt-4">
+        <input id="trace" name="type" value="Trace"  type="radio" onclick="buttonHandler()" class="hidden">
+        <label for="trace"   class="bg-transparent font-medium text-sm hover:bg-gray-200 p-2 px-4 mx-1">Trace</label>
+        </div>
+    </div>
+    </form>
+
+</div>
+
+<style> 
+ul + ul {
+    border-top: 1px solid #bbb;
+}
+</style>
+<script type="text/x-template" id="trace-step">
+<div v-if="ns" class="relative my-8 m-auto w-full bg-gray-100 p-8 pt-12 shadow-md">
+        <span class="absolute rounded left-2 -top-4 shadow-sm p-2 inline-block bg-purple-500 text-white">{{title}}</span>
+    <div>
+        <div v-if="records" class="w-full">
+        <h2 class="font-bold text-xl">Request:</h2>
+        <div class="w-full pl-4 py-4 font-mono">
+        <span class="text-purple-600 font-semibold">To: </span>{{ns}}<br>
+        <span class="text-purple-600 font-semibold">Record type: </span>A<br>
+        <span class="text-purple-600 font-semibold">Domain: </span>{{domain}}
+        </div>
+        <h2 class="font-bold text-xl">Response:</h2>
+        <table id="answers" class="pl-4 w-full sm:block hidden">
+            <tr class="border-b border-gray-300">
+                <td class="px-4" >name</td>
+                <td class="px-4" >TTL</td>
+                <td class="px-4 whitespace-nowrap" >record type</td>
+                <td class="px-4" >value</td>
+            </tr>
+            <tr v-for="answer in records" class="py-4 font-mono">
+                <td class="align-top py-1 px-4">{{answer.name}}</td>
+                <td class="align-top py-1 px-4">{{answer.ttl}}</td>
+                <td class="align-top py-1 px-4 w-24">{{answer.type}}</td>
+                <td class="align-top py-1 px-4 w-full" style="word-break: break-word;">{{answer.value}} </td>
+            </tr>
+        </table>
+        <!-- show a list on small screens -->
+        <ul v-for="answer in records" class="pl-4 py-4 font-mono sm:hidden block">
+            <li><span class="text-purple-600 font-semibold">Name:</span> {{answer.name}}</li>
+            <li><span class="text-purple-600 font-semibold">TTL:</span> {{answer.ttl}}</li>
+            <li><span class="text-purple-600 font-semibold">Record Type:</span> {{answer.type}}</li>
+            <li style="word-break: break-word;"><span class="text-purple-600 font-semibold">Value:</span> {{answer.value}} </li>
+        </ul>
+        </div>
+    </div>
+</div>
+</script>
+
+<div id="app">
+    <div class="my-4">
+    Ever wondered what exactly is going on behind the scenes when you make a
+    DNS query? This tool shows you how it works!
+    </div>
+
+    <div class="my-4">
+        All of these DNS queries start by querying one of the root DNS servers
+        (<code>192.203.230.10</code>) and in 3 steps, get to an IP address for any domain. 
+    </div>
+    <tracestep title="Step 1: Ask root nameserver" 
+         v-bind:ns="rootNS"
+         v-bind:domain="domain"
+         v-bind:records="root"> </tracestep>
+    <tracestep title="Step 2: Ask TLD nameserver"
+         v-bind:ns="tldNS"
+         v-bind:domain="domain"
+         v-bind:records="tld"> </tracestep>
+    <tracestep title="Step 3: Ask authoritative nameserver" 
+         v-bind:ns="authNS"
+         v-bind:domain="domain"
+         v-bind:records="auth"> </tracestep>
+<div class="text-sm w-full m-auto mt-64">
+    <p class="pb-2">
+    FAQ:
+    </p>
+
+    <p class="font-bold">Where are the DNS queries being made?</p>
+    <p class="pl-2 mb-4">
+    In <a class="underline" href="https://github.com/jvns/dns-lookup/blob/d204fa593d503e6ab47dbbab3cc738db2260b880/dns.go">this little Go program</a>
+    </p>
+
+    <p class="font-bold">What does this build on?</p>
+    <p class="pl-2 mb-4">
+    This design is extremely heavily inspired by <a href="https://toolbox.googleapps.com/apps/dig/#SRV/" class="text-purple-800">Google's DNS lookup webmaster tool</a>. The main differences are a "GET ME ALL THE RECORDS" feature and simpler formatting of the output.
+    </p>
+
+</div>
+</div>
+
+  </body>
+</html>
