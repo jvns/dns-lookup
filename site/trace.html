@@ -139,14 +139,16 @@ ul + ul {
     FAQ:
     </p>
 
-    <p class="font-bold">Where are the DNS queries being made?</p>
+    <p class="font-bold">Where does the root nameserver IP address <code>192.203.230.10</code> come from?</p>
     <p class="pl-2 mb-4">
-    In <a class="underline" href="https://github.com/jvns/dns-lookup/blob/d204fa593d503e6ab47dbbab3cc738db2260b880/dns.go">this little Go program</a>
+    From <a class="text-purple-500" href="https://www.iana.org/domains/root/servers">this list of root nameservers from IANA</a> (it's run by NASA!)
     </p>
 
-    <p class="font-bold">What does this build on?</p>
+    <p class="font-bold">Where are the DNS queries being made?</p>
     <p class="pl-2 mb-4">
-    This design is extremely heavily inspired by <a href="https://toolbox.googleapps.com/apps/dig/#SRV/" class="text-purple-800">Google's DNS lookup webmaster tool</a>. The main differences are a "GET ME ALL THE RECORDS" feature and simpler formatting of the output.
+    It's a combination of
+    <a class="text-purple-500" href="https://github.com/jvns/dns-lookup/blob/master/dns.go">this little Go program</a>
+    and <a class="text-purple-500" href="https://github.com/jvns/dns-lookup/blob/master/site/trace.js">this Javascript code</a>
     </p>
 
 </div>
