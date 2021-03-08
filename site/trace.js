@@ -100,7 +100,12 @@ async function trace(domain) {
     app.rootNS =  "192.203.230.10"
     app.rootResponses = await query(domain, app.rootNS);
     app.tldNS = app.rootResponses['authority'][0]['value'];
+    // Do a 500ms sleep here just to make it "feel" more like there are 3
+    // different stages and like it's happening "live".
+    // Without the replies come back too fast!
+    await new Promise(r => setTimeout(r, 500));
     app.tldResponses = await query(domain, app.tldNS);
     app.authNS = app.tldResponses['authority'][0]['value'];
+    await new Promise(r => setTimeout(r, 500));
     app.authResponses = await query(domain, app.authNS);
 }

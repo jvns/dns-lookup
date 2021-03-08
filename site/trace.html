@@ -74,14 +74,15 @@ ul + ul {
 <div v-if="ns" class="relative my-8 m-auto w-full bg-gray-100 p-8 pt-12 shadow-md">
         <span class="absolute rounded left-2 -top-4 shadow-sm p-2 inline-block bg-purple-500 text-white">{{title}}</span>
     <div>
-        <div v-if="records" class="w-full">
         <h2 class="font-bold text-xl">Request:</h2>
         <div class="w-full pl-4 py-4 font-mono">
         <span class="text-purple-600 font-semibold">To: </span>{{ns}}<br>
         <span class="text-purple-600 font-semibold">Record type: </span>A<br>
         <span class="text-purple-600 font-semibold">Domain: </span>{{domain}}
         </div>
-        <h2 class="font-bold text-xl">Response:</h2>
+
+        <div v-if="records" class="w-full">
+                <h2 class="font-bold text-xl">Response:</h2>
         <table id="answers" class="pl-4 w-full sm:block hidden">
             <tr class="border-b border-gray-300">
                 <td class="px-4" >name</td>
