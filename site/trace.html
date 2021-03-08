@@ -119,6 +119,9 @@ ul + ul {
         We'll start by querying one of the root DNS servers
         (<code>192.203.230.10</code>) and in 3 steps, get to an IP address for the domain. 
     </div>
+    <div class="my-4">
+        It just looks up A records (since the goal is just to show how it works), try <a href="/" class="text-purple-500">the main DNS lookup tool</a> to make other kinds of queries.
+    </div>
     <tracestep title="Step 1: Ask root nameserver" 
          v-bind:ns="rootNS"
          v-bind:domain="domain"
