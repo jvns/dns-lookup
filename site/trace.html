@@ -116,12 +116,23 @@ ul + ul {
     </div>
 
     <div class="my-4">
-        We'll start by querying one of the root DNS servers
-        (<code>192.203.230.10</code>) and in 3 steps, get to an IP address for the domain. 
-    </div>
-    <div class="my-4">
         It just looks up A records (since the goal is just to show how it works), try <a href="/" class="text-purple-500">the main DNS lookup tool</a> to make other kinds of queries.
     </div>
+    <div v-if="rootServers" class="relative my-8 m-auto w-full bg-gray-100 p-8 pt-12 shadow-md">
+        <span class="absolute rounded left-2 -top-4 shadow-sm p-2 inline-block bg-purple-500 text-white">Step 0: Choose a root nameserver</span>
+        <div>
+            <p>
+            There are 13 root nameservers (this list comes from <a class="underline text-purple-500" href="https://www.iana.org/domains/root/servers">here</a>):
+            </p>
+            <p class="font-mono pl-4">
+             {{rootServers.join(", ")}} 
+            </p>
+            <p class="mt-4">
+            Let's pick one at random: <span class="font-mono text-purple-500">{{rootNS}}</span>
+            </p>
+        </div>
+    </div>
+
     <tracestep title="Step 1: Ask root nameserver" 
          v-bind:ns="rootNS"
          v-bind:domain="domain"
