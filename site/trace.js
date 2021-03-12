@@ -20,26 +20,6 @@ app = new Vue({
       authResponses: undefined,
       rootServers: undefined,
   },
-  computed: {
-      root: function() {
-          if (!this.rootResponses) {
-              return undefined;
-          }
-          return this.rootResponses.authority;
-      },
-      tld: function() {
-          if (!this.tldResponses) {
-              return undefined;
-          }
-          return this.tldResponses.authority;
-      },
-      auth: function() {
-          if (!this.authResponses) {
-              return undefined;
-          }
-          return this.authResponses.answer;
-      },
-  },
 })
 loadFromHash();
 })

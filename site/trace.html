@@ -97,16 +97,35 @@ ul + ul {
 <div v-if="ns" class="relative my-8 m-auto w-full bg-gray-100 p-8 pt-12 shadow-md">
         <span class="absolute rounded left-2 -top-4 shadow-sm p-2 inline-block bg-purple-500 text-white">{{title}}</span>
     <div>
-        <h2 class="font-bold text-xl">Request:</h2>
-        <div class="w-full pl-4 py-4 font-mono">
+        <h2 class="font-bold text-xl mb-4">Request:</h2>
+        <div class="w-full pl-4 pb-4 font-mono">
         <span class="text-purple-600 font-semibold">To: </span>{{ns}}<br>
         <span class="text-purple-600 font-semibold">Record type: </span>A<br>
         <span class="text-purple-600 font-semibold">Domain: </span>{{domain}}
         </div>
 
         <div v-if="records" class="w-full">
-            <h2 class="font-bold text-xl">Response:</h2>
-            <recordlist v-bind:records="records"></recordlist>
+            <h2 class="font-bold text-xl mb-4 py-4">Response</h2>
+                <div class="bg-purple-100 relative pt-8 p-4 shadow-md">
+                    <h3 class="inline absolute rounded left-2 -top-4 shadow-sm p-2 inline-block bg-white font-bold shadow-sm">Answer section</h3>
+                    <div v-if="records.answer.length > 0">
+                        <recordlist v-bind:records="records.answer"></recordlist>
+                    </div>
+                    <div v-else class="py-2">
+                    It's empty! This means "I don't have any <code class="font-mono">A</code> records for {{domain}}".
+                    </div>
+                </div>
+                <!-- todo: does it really make sense to not display the authority section if there's an answer? not sure. -->
+                <div v-if="records.authority.length > 0 && records.answer.length == 0" class="bg-purple-100 relative pt-8 p-4 mt-8 shadow-md">
+                    <h3 class="inline absolute rounded left-2 -top-4 shadow-sm p-2 inline-block bg-white font-bold shadow-sm">Authority section</h3>
+
+                    <div class="py-2">
+                    This means "Ask one of these other servers instead of me".
+                    </div>
+                    <recordlist v-bind:records="records.authority"></recordlist>
+                </div>
+
+
         </div>
     </div>
 </div>
@@ -115,22 +134,19 @@ ul + ul {
 <div id="app">
     <div class="my-4">
     Ever wondered what exactly is going on behind the scenes when you make a
-    DNS query? This tool shows you how it works!
+    DNS query? This tool shows you how it works! This is what recursive DNS servers like <code>8.8.8.8</code> or <code>1.1.1.1</code> do when they don't have a result in their cache.
     </div>
 
-    <div class="my-4">
-        It just looks up A records (since the goal is just to show how it works), try <a href="/" class="text-purple-500">the main DNS lookup tool</a> to make other kinds of queries.
-    </div>
     <div v-if="rootServers" class="relative my-8 m-auto w-full bg-gray-100 p-8 pt-12 shadow-md">
         <span class="absolute rounded left-2 -top-4 shadow-sm p-2 inline-block bg-purple-500 text-white">Step 0: Choose a root nameserver</span>
         <div>
-            <p>
+            <p class="my-2">
             There are 13 root nameservers (this list comes from <a class="underline text-purple-500" href="https://www.iana.org/domains/root/servers">here</a>):
             </p>
-            <p class="font-mono pl-4">
+            <p class="font-mono pl-4 my-2">
              {{rootServers.join(", ")}} 
             </p>
-            <p class="mt-4">
+            <p class="mt-4 mt-6">
             Let's pick one at random: <span class="font-mono text-purple-500">{{rootNS}}</span>
             </p>
         </div>
@@ -139,24 +155,25 @@ ul + ul {
     <tracestep title="Step 1: Ask root nameserver" 
          v-bind:ns="rootNS"
          v-bind:domain="domain"
-         v-bind:records="root"> </tracestep>
+         v-bind:records="rootResponses"> </tracestep>
     <tracestep title="Step 2: Ask TLD nameserver"
          v-bind:ns="tldNS"
          v-bind:domain="domain"
-         v-bind:records="tld"> </tracestep>
+         v-bind:records="tldResponses"> </tracestep>
     <tracestep title="Step 3: Ask authoritative nameserver" 
          v-bind:ns="authNS"
          v-bind:domain="domain"
-         v-bind:records="auth"> </tracestep>
+         v-bind:records="authResponses"> </tracestep>
 <div class="text-sm w-full m-auto mt-64">
     <p class="pb-2">
     FAQ:
     </p>
 
-    <p class="font-bold">Where does the root nameserver IP address <code>192.203.230.10</code> come from?</p>
+    <p class="font-bold">How can I get the same information from a command line tool?</p>
     <p class="pl-2 mb-4">
-    From <a class="text-purple-500" href="https://www.iana.org/domains/root/servers">this list of root nameservers from IANA</a> (it's run by NASA!)
+    Use <code> dig +trace yourdomain.com</code>
     </p>
+
 
     <p class="font-bold">Where are the DNS queries being made?</p>
     <p class="pl-2 mb-4">
