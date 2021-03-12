@@ -4,6 +4,10 @@ Vue.component('tracestep', {
   template: '#trace-step',
   props: ['title', 'records', "ns", "domain"],
 })
+Vue.component('recordlist', {
+  template: '#recordlist',
+  props: ['records'],
+})
 app = new Vue({
   el: '#app',
   data: {
