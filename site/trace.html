@@ -79,7 +79,7 @@ ul + ul {
         <td class="px-4" >value</td>
     </tr>
     <tr v-for="answer in records" class="py-4 font-mono">
-        <td class="align-top py-1 px-4">{{answer.name}}</td>
+        <td style="white-space: nowrap" class="align-top py-1 px-4">{{answer.name}}</td>
         <td class="align-top py-1 px-4">{{answer.ttl}}</td>
         <td class="align-top py-1 px-4 w-24">{{answer.type}}</td>
         <td class="align-top py-1 px-4 w-full" style="word-break: break-word;">{{answer.value}} </td>
@@ -124,6 +124,16 @@ ul + ul {
                     </div>
                     <recordlist v-bind:records="records.authority"></recordlist>
                 </div>
+                <!-- todo: does it really make sense to not display the authority section if there's an answer? not sure. -->
+                <div v-if="records.additional.length > 0 && records.answer.length == 0" class="bg-purple-100 relative pt-8 p-4 mt-8 shadow-md">
+                    <h3 class="inline absolute rounded left-2 -top-4 shadow-sm p-2 inline-block bg-white font-bold shadow-sm">Additional section</h3>
+
+                    <div class="py-2">
+                    This is a list of "additional" records. They're usually IP addresses of the DNS servers in the Authority section. This helps save time looking up those records.
+                    </div>
+                    <recordlist v-bind:records="records.additional"></recordlist>
+                </div>
+
 
 
         </div>
