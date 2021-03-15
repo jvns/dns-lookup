@@ -71,6 +71,7 @@ ul + ul {
 }
 </style>
 <script type="text/x-template" id="recordlist">
+<div>
 <table id="answers" class="pl-4 w-full sm:block hidden">
     <tr class="border-b border-gray-300">
         <td class="px-4" >name</td>
@@ -92,6 +93,7 @@ ul + ul {
     <li><span class="text-purple-600 font-semibold">Record Type:</span> {{answer.type}}</li>
     <li style="word-break: break-word;"><span class="text-purple-600 font-semibold">Value:</span> {{answer.value}} </li>
 </ul>
+</div>
 </script>
 <script type="text/x-template" id="trace-step">
 <div v-if="ns" class="relative my-8 m-auto w-full bg-gray-100 p-8 pt-12 shadow-md">
