@@ -57,10 +57,29 @@ function formSubmit(event) {
     lookup(element);
 }
 
+function getDomain(url) {
+  url = url.trim();
+  // Protocol
+  if (url.includes("://")) {
+    url = url.slice(url.indexOf("://") + 3);
+  }
+  // Path
+  if (url.includes("/")) {
+    url = url.slice(0, url.indexOf("/"));
+  }
+  // Port
+  if (url.includes(":")) {
+    url = url.slice(0, url.indexOf(":"));
+  }
+  return url;
+}
+
 function lookup(element) {
     var requestID = makeid(10);
     app.requestID = requestID;
-    const domain = document.getElementById('domain').value.trim();
+    const url = document.getElementById('domain').value;
+    const domain = getDomain(url);
+    document.getElementById('domain').value = domain;
     const type = element.id.toLowerCase();
     if (type == 'all-the-records') {
         lookupAll(domain, requestID);
